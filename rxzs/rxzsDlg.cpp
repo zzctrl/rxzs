@@ -51,9 +51,9 @@ BOOL CrxzsDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化代码
 	// TODO: 在此添加额外的初始化代码
-	m_listGames.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+	m_listGames.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	m_listGames.InsertColumn(0, L"进程ID", LVCFMT_LEFT, 80);
-	m_listGames.InsertColumn(1, L"游戏名称", LVCFMT_LEFT, 200);
+	m_listGames.InsertColumn(1, L"游戏名称", LVCFMT_LEFT, 220);
 
 	OnRefreshGameList();
 
@@ -112,7 +112,18 @@ void CrxzsDlg::OnBnClickedOk()
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
 
-	int nSel = m_listGames.GetSelectionMark();
+	int nSel = -1;
+	for (int i = 0; i < m_listGames.GetItemCount(); i++)
+	{
+		UINT nState = m_listGames.GetItemState(i, LVIS_SELECTED);
+		if (LVIS_SELECTED == nState)
+		{
+			nSel = i;
+			break;
+		}
+	}
+
+	//int nSel = m_listGames.GetSelectionMark();
 	if (nSel < 0)
 	{
 		AfxMessageBox(L"请先选中游戏后再修改！");
